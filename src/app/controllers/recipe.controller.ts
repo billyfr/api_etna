@@ -35,4 +35,22 @@ export class RecipeController {
             datas: this.recipeServices.getRecipesBySlug()
         };
     }
+
+    @Get(':slug/steps.json')
+    @HttpCode(200)
+    async getStepBySlug(@Param('slug') slugParam: string) {
+        const recipes = await this.recipesRepository
+            .createQueryBuilder('recipes')
+            .where('recipes.slug = :slug', { slug: slugParam })
+            .getOne();
+        if (!recipes) {
+            throw new HttpException({ error: 'Bad request', datas: [] }, HttpStatus.BAD_REQUEST);
+        }
+        const steps = recipes.step.split(',');
+        return {
+            code: 200,
+            message: 'OK',
+            datas: steps
+        };
+    }
 }
