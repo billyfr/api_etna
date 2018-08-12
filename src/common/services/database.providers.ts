@@ -6,7 +6,7 @@ export const databaseProviders = [{
         type: 'postgres',
         name: 'default',
         // database: 'das7ul1a8vpo1t',
-        url: 'postgres://denisprak:@localhost/postgres',
+        url: 'postgres://postgres:postgres@localhost/das7ul1a8vpo1t',
         // synchronize: true,
         logging: true,
         entities: [
