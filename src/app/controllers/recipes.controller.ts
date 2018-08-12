@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, HttpCode, HttpException, HttpStatus } from "@nestjs/common";
+import { Controller, Get, Inject, HttpCode, HttpException, HttpStatus, Param } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { recipes__recipe } from "common/models/entities/recipesRecipe.entity";
 import { RecipesServices } from "../services/recipes.services";
@@ -22,7 +22,7 @@ export class RecipesController {
                 datas: this.recipeServices.getRecipes()
             };
         } else {
-            throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+            throw new HttpException({ error: 'Not Found' }, HttpStatus.NOT_FOUND);
         }
     }
 }

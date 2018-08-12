@@ -1,6 +1,7 @@
 import { IsInt, IsString } from 'class-validator';
-import { JsonProperty } from 'json2typescript';
+import { JsonProperty, JsonObject } from 'json2typescript';
 
+@JsonObject
 export class RecipesDto {
 
     @JsonProperty('id', Number)

@@ -7,6 +7,7 @@ import { UsersController } from './controllers/users.controller';
 import { recipeProviders } from './../common/services/recipes.providers';
 import { RecipesController } from './controllers/recipes.controller';
 import { RecipesServices } from './services/recipes.services';
+import { RecipeController } from './controllers/recipe.controller';
 
 @Module({
   imports: [],
@@ -14,6 +15,7 @@ import { RecipesServices } from './services/recipes.services';
     AppController,
     UsersController,
     RecipesController,
+    RecipeController,
   ],
   providers: [
     AppService,

@@ -19,6 +19,6 @@ export class users__user {
     @Column()
     password: string;
 
-    // @OneToMany(type => recipes__recipe, r => r.user)
-    // recipes: recipes__recipe[];
+    @OneToMany(type => recipes__recipe, r => r.user)
+    recipes: recipes__recipe[];
 }
