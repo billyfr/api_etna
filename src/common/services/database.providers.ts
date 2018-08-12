@@ -1,7 +1,7 @@
 import { EnvConfig } from './envConfig.service';
 import { createConnection } from 'typeorm';
 
-const config: EnvConfig = new EnvConfig();
+// const config: EnvConfig = new EnvConfig();
 
 export const databaseProviders = [{
     provide: 'DbConnectionToken',

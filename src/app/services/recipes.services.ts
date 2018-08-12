@@ -1,3 +1,4 @@
+import { AddRecipesDto } from './../../common/models/dtos/postRecipe.dto';
 import { Injectable } from "@nestjs/common";
 import { RecipesDto } from "./../../common/models/dtos/recipesRecipe.dto";
 import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
@@ -39,6 +40,15 @@ export class RecipesServices {
         jsonConvert.ignorePrimitiveChecks = false;
         jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL;
         const dto = jsonConvert.deserialize(this.recipes, RecipesSlugDto);
+        return dto;
+    }
+
+    getRecipe(): RecipesDto {
+        let jsonConvert: JsonConvert = new JsonConvert();
+        jsonConvert.operationMode = OperationMode.LOGGING;
+        jsonConvert.ignorePrimitiveChecks = false;
+        jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL;
+        const dto = jsonConvert.deserialize(this.recipes, AddRecipesDto);
         return dto;
     }
 }

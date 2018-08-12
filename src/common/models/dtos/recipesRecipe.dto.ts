@@ -1,4 +1,4 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsString, IsArray } from 'class-validator';
 import { JsonProperty, JsonObject } from 'json2typescript';
 
 @JsonObject
@@ -15,4 +15,5 @@ export class RecipesDto {
     @JsonProperty('slug', String)
     @IsString()
     public slug: string = undefined;
+
 }
