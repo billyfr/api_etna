@@ -13,7 +13,7 @@ export class RecipeController {
     @Get(':slug')
     @HttpCode(200)
     async getRecipesBySlug(@Param('slug') slugParam: string) {
-        const regex = /([\w-_]+).json/;
+        const regex = /^([\w-_]+).json/;
         let slug;
         try {
             slug = slugParam.match(regex)[1];
@@ -47,10 +47,16 @@ export class RecipeController {
             throw new HttpException({ error: 'Bad request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
         const steps = recipes.step.split(',');
+        let step = [];
+        steps.forEach((s, index, tab) => {
+            if (index < tab.length) {
+                step.push(s);
+            }
+        });
         return {
             code: 200,
             message: 'OK',
-            datas: steps
+            datas: step
         };
     }
 }
