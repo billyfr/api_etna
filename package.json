@@ -21,6 +21,8 @@
   "dependencies": {
     "@nestjs/common": "^5.0.0",
     "@nestjs/core": "^5.0.0",
+    "@types/dotenv": "^4.0.3",
+    "cfenv": "^1.1.0",
     "class-validator": "^0.9.1",
     "dotenv": "^6.0.0",
     "fastify-formbody": "^2.0.0",
