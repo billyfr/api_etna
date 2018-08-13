@@ -15,7 +15,7 @@ export class RecipeController {
 
     @Get(':slug')
     @HttpCode(200)
-    @UseGuards(AuthGuard)
+    // @UseGuards(AuthGuard)
     async getRecipesBySlug(@Param('slug') slugParam: string) {
         const regex = /^([\w-_]+).json/;
         let slug;
