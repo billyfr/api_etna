@@ -16,7 +16,7 @@ export class UserDto {
     @IsInt()
     public id: number = undefined;
 
-    @JsonProperty('email')
-    @IsString()
-    public email: number = undefined;
+    // @JsonProperty('email')
+    // @IsString()
+    // public email: number = undefined;
 }

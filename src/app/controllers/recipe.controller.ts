@@ -75,17 +75,17 @@ export class RecipeController {
         } catch (error) {
             throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
+        const user = await this.userRepository.findOne({ where: { password: req.headers['authorization'] } });
+        if (!user) {
+            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
+        }
         const recipe = await this.recipesRepository
             .createQueryBuilder('recipe')
             .leftJoinAndSelect('recipe.user', 'user')
             .where('recipe.slug = :name', { name: recipeParam[1] })
             .getOne();
         if (!recipe) {
-            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
-        }
-        const user = await this.userRepository.findOne({ where: { password: req.headers['authorization'] } });
-        if (!user) {
-            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
+            throw new HttpException({ error: 'Not Found', datas: [] }, HttpStatus.NOT_FOUND);
         }
         const _recipe = new recipes__recipe();
         const _user = new users__user();
@@ -120,6 +120,10 @@ export class RecipeController {
         try {
             recipeParam = slug.match(regex)[1];
         } catch (error) {
+            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
+        }
+        const user = await this.userRepository.findOne({ where: { password: req.headers['authorization'] } });
+        if (!user) {
             throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
         const recipe = await this.recipesRepository
