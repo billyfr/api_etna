@@ -53,7 +53,7 @@ export class RecipeController {
         const steps = recipes.step.split(',');
         let step = [];
         steps.forEach((s, index, tab) => {
-            if (index < tab.length) {
+            if (index < tab.length - 1) {
                 step.push(s);
             }
         });
