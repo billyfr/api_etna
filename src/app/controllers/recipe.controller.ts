@@ -48,7 +48,7 @@ export class RecipeController {
             .where('recipes.slug = :slug', { slug: slugParam })
             .getOne();
         if (!recipes) {
-            throw new HttpException({ error: 'Bad request', datas: [] }, HttpStatus.BAD_REQUEST);
+            throw new HttpException({ error: 'Not Found' }, HttpStatus.NOT_FOUND);
         }
         const steps = recipes.step.split(',');
         let step = [];
