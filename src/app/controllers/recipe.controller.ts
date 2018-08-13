@@ -114,7 +114,7 @@ export class RecipeController {
     @Delete(':slug')
     @HttpCode(200)
     @UseGuards(AuthGuard)
-    async deleteRecipe(@Param('slug') slug: string) {
+    async deleteRecipe(@Param('slug') slug: string, @Req() req: any) {
         const regex = /^([\w-_]+).json/;
         let recipeParam;
         try {
