@@ -48,6 +48,13 @@ export class RecipesServices {
         jsonConvert.operationMode = OperationMode.LOGGING;
         jsonConvert.ignorePrimitiveChecks = false;
         jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL;
+        const step = this.recipes.step.split(',');
+        this.recipes.step = [];
+        step.forEach((step, index, tab) => {
+            if (index < tab.length - 1) {
+                this.recipes.step.push(step);
+            }
+        });
         const dto = jsonConvert.deserialize(this.recipes, AddRecipesDto);
         return dto;
     }

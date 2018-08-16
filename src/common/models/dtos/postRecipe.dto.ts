@@ -19,9 +19,9 @@ export class AddRecipesDto {
 
     @JsonProperty('slug', String)
     @IsString()
-    public slug: string = undefined;
+    public slug: Array<string> = undefined;
 
-    @JsonProperty('step', String)
+    @JsonProperty('step', [String])
     @IsArray()
     public step: Array<string> = undefined;
 
