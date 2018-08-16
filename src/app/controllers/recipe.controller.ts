@@ -75,9 +75,12 @@ export class RecipeController {
         } catch (error) {
             throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
+        if (!recipeParam) {
+            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
+        }
         const user = await this.userRepository.findOne({ where: { password: req.headers['authorization'] } });
         if (!user) {
-            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
+            throw new HttpException({ error: 'Unauthorized' }, HttpStatus.UNAUTHORIZED);
         }
         const recipe = await this.recipesRepository
             .createQueryBuilder('recipe')
