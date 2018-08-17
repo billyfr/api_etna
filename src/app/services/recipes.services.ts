@@ -19,7 +19,7 @@ export class RecipesServices {
     getRecipes(): RecipesDto[] {
         const recipesDto: RecipesDto[] = [];
         let jsonConvert: JsonConvert = new JsonConvert();
-        jsonConvert.operationMode = OperationMode.LOGGING;
+        // jsonConvert.operationMode = OperationMode.LOGGING;
         jsonConvert.ignorePrimitiveChecks = false;
         jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL;
         this.recipes.forEach(r => {
@@ -36,7 +36,7 @@ export class RecipesServices {
 
     getRecipesBySlug(): RecipesSlugDto {
         let jsonConvert: JsonConvert = new JsonConvert();
-        jsonConvert.operationMode = OperationMode.LOGGING;
+        // jsonConvert.operationMode = OperationMode.LOGGING;
         jsonConvert.ignorePrimitiveChecks = false;
         jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL;
         const dto = jsonConvert.deserialize(this.recipes, RecipesSlugDto);
@@ -45,7 +45,7 @@ export class RecipesServices {
 
     getRecipe(): RecipesDto {
         let jsonConvert: JsonConvert = new JsonConvert();
-        jsonConvert.operationMode = OperationMode.LOGGING;
+        // jsonConvert.operationMode = OperationMode.LOGGING;
         jsonConvert.ignorePrimitiveChecks = false;
         jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL;
         const step = this.recipes.step.split(',');
