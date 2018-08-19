@@ -69,7 +69,7 @@ export class RecipeController {
     @Put(':name')
     @HttpCode(200)
     @UseGuards(AuthGuard)
-    async modifyRecipe(@Body() body: AddRecipesDto, @Req() req: any, @Param('name') param: string) {
+    async modifyRecipe(@Body() body: any, @Req() req: any, @Param('name') param: string) {
         const regex = /^([\w-_]+).json/;
         let recipeParam;
         let jsonConvert: JsonConvert = new JsonConvert();
@@ -99,8 +99,8 @@ export class RecipeController {
         if (recipe.user.password !== req.headers['authorization']) {
             throw new HttpException({ error: 'Forbidden' }, HttpStatus.FORBIDDEN);
         }
-        if ((body.name && body.name.length === 0) || (body.slug && body.slug.length === 0) ||
-            (body.step && body.step.length === 0)) {
+        if ((body.name.length === 0 || body.name === '') || (body.slug.length === 0 || body.slug === '') ||
+            (body.step.length === 0 || body.step === '')) {
             throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
         const _recipe = new recipes__recipe();
@@ -175,6 +175,9 @@ export class RecipeController {
 
         if (!recipe) {
             throw new HttpException({ error: 'Not Found' }, HttpStatus.NOT_FOUND);
+        }
+        if (recipe.user.password !== req.headers['authorization']) {
+            throw new HttpException({ error: 'Forbidden' }, HttpStatus.FORBIDDEN);
         }
         const deleteRecipe = await this.recipesRepository.delete(recipe);
         if (deleteRecipe.raw.length === 0) {
