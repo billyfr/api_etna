@@ -96,6 +96,12 @@ export class RecipeController {
         if (!recipe) {
             throw new HttpException({ error: 'Not Found', datas: [] }, HttpStatus.NOT_FOUND);
         }
+        if (recipe.user.password !== req.headers['authorization']) {
+            throw new HttpException({ error: 'Unauthorized' }, HttpStatus.UNAUTHORIZED);
+        }
+        if (!body.name || body.slug || body.step.length === 0) {
+            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
+        }
         const _recipe = new recipes__recipe();
         const _user = new users__user();
         let sp = '';
@@ -104,7 +110,6 @@ export class RecipeController {
                 sp = sp.concat(s, ',');
             });
         }
-        console.log(recipe);
 
         // const reciped = jsonConvert.serialize(recipe);
         _user.last_login = new Date(Date.now()).toISOString();
