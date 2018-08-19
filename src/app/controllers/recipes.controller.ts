@@ -16,11 +16,21 @@ export class RecipesController {
 
     @Get()
     @HttpCode(200)
-    async getAllRecipes(@Query('name') name?: string) {
-        const options: any = {};
-        if (name) {
-            options.name = Like(`%${name.toString()}%`);
+    async getAllRecipes(@Query() query?: any) {
+        const options: any = {
+        };
+        console.log(query);
+
+        if (query.name) {
+            options.name = Like(`%${query.name.toString()}%`);
+        } if (query.id) {
+            options.where = {
+                id: query.id
+            };
+        } if (query.slug) {
+            options.slug = Like(`%${query.slug.toString()}%`);
         }
+
         const recipes: Array<recipes__recipe> = await this.recipesRepository.find(options);
         if (recipes) {
             this.recipeServices.setRecipes(recipes);
