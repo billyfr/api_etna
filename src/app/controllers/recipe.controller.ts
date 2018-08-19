@@ -99,7 +99,8 @@ export class RecipeController {
         if (recipe.user.password !== req.headers['authorization']) {
             throw new HttpException({ error: 'Unauthorized' }, HttpStatus.UNAUTHORIZED);
         }
-        if (!body.name || body.slug || body.step.length === 0) {
+        if ((body.name && body.name.length === 0) || (body.slug && body.slug.length === 0) ||
+            (body.step && body.step.length === 0)) {
             throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
         const _recipe = new recipes__recipe();
@@ -122,9 +123,9 @@ export class RecipeController {
         // _recipe.step = sp || recipe.step;
         // _recipe.user = _user;
         _recipe.id = recipe.id;
-        _recipe.name = body.name;
-        _recipe.slug = body.slug;
-        _recipe.step = sp;
+        _recipe.name = body.name ? body.name : recipe.name
+        _recipe.slug = body.slug ? body.slug : recipe.slug;
+        _recipe.step = sp.length === 0 ? recipe.step : sp;
         _recipe.user = _user;
         let updateRecipe;
         try {
@@ -132,6 +133,8 @@ export class RecipeController {
         } catch (error) {
             throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
+        console.log(jsonConvert.serializeObject(updateRecipe));
+
         delete updateRecipe.user.email;
         this.recipeServices.setRecipes(updateRecipe);
         return {
