@@ -55,7 +55,7 @@ export class RecipesServices {
                 this.recipes.step.push(step);
             }
         });
-        const dto = jsonConvert.deserialize(this.recipes, AddRecipesDto);
-        return dto;
+        // const dto = jsonConvert.deserialize(this.recipes, AddRecipesDto);
+        return this.recipes;
     }
 }

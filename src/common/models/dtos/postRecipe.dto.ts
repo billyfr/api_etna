@@ -1,4 +1,4 @@
-import { IsInt, IsString, IsArray, ValidateNested } from 'class-validator';
+import { IsInt, IsString, IsArray, ValidateNested, IsDefined } from 'class-validator';
 import { JsonProperty, JsonObject } from 'json2typescript';
 import { UserDto } from './user.dto';
 
@@ -7,7 +7,7 @@ export class AddRecipesDto {
 
     @JsonProperty('id', Number)
     @IsInt()
-    public id: number = undefined;
+    public id?: number = undefined;
 
     @JsonProperty('name', String)
     @IsString()
@@ -19,10 +19,11 @@ export class AddRecipesDto {
 
     @JsonProperty('slug', String)
     @IsString()
-    public slug: Array<string> = undefined;
+    @IsDefined()
+    public slug: string = undefined;
 
     @JsonProperty('step', [String])
     @IsArray()
-    public step: Array<string> = undefined;
+    public step?: Array<string> = undefined;
 
 }

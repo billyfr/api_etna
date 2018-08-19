@@ -1,9 +1,11 @@
+import { AddRecipesDto } from './../../common/models/dtos/postRecipe.dto';
 import { AuthGuard } from './../guards/authorization.guard';
 import { users__user } from './../../common/models/entities/usersUser.entity';
-import { Controller, Get, HttpCode, Param, Inject, HttpStatus, HttpException, Put, UseGuards, Body, Req, Delete } from "@nestjs/common";
+import { Controller, Get, HttpCode, Param, Inject, HttpStatus, HttpException, Put, UseGuards, Body, Req, Delete, ValidationPipe } from "@nestjs/common";
 import { RecipesServices } from "../services/recipes.services";
 import { Repository } from "typeorm";
 import { recipes__recipe } from "../../common/models/entities/recipesRecipe.entity";
+import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
 
 @Controller('recipes')
 export class RecipeController {
@@ -67,9 +69,13 @@ export class RecipeController {
     @Put(':name')
     @HttpCode(200)
     @UseGuards(AuthGuard)
-    async modifyRecipe(@Body() body: any, @Req() req: any, @Param('name') param: string) {
+    async modifyRecipe(@Body() body: AddRecipesDto, @Req() req: any, @Param('name') param: string) {
         const regex = /^([\w-_]+).json/;
         let recipeParam;
+        let jsonConvert: JsonConvert = new JsonConvert();
+        // jsonConvert.operationMode = OperationMode.LOGGING;
+        jsonConvert.ignorePrimitiveChecks = false;
+        jsonConvert.valueCheckingMode = ValueCheckingMode.DISALLOW_NULL;
         try {
             recipeParam = param.match(regex);
         } catch (error) {
@@ -93,24 +99,40 @@ export class RecipeController {
         const _recipe = new recipes__recipe();
         const _user = new users__user();
         let sp = '';
-        body.step.forEach(s => {
-            sp = sp.concat(s, ',');
-        });
+        if (body.step) {
+            body.step.forEach(s => {
+                sp = sp.concat(s, ',');
+            });
+        }
+        console.log(recipe);
+
+        // const reciped = jsonConvert.serialize(recipe);
         _user.last_login = new Date(Date.now()).toISOString();
         _user.id = user.id;
         _user.email = user.email;
         _user.username = user.username;
+        // _recipe.id = recipe.id;
+        // _recipe.name = body.name || recipe.name;
+        // _recipe.slug = body.slug || recipe.slug;
+        // _recipe.step = sp || recipe.step;
+        // _recipe.user = _user;
         _recipe.id = recipe.id;
-        _recipe.name = body.name || recipe.name;
-        _recipe.slug = body.slug || recipe.slug;
-        _recipe.step = sp || recipe.step;
+        _recipe.name = body.name;
+        _recipe.slug = body.slug;
+        _recipe.step = sp;
         _recipe.user = _user;
-        const updateRecipe = await this.recipesRepository.save(_recipe);
+        let updateRecipe;
+        try {
+            updateRecipe = await this.recipesRepository.save(_recipe);
+        } catch (error) {
+            throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
+        }
+        delete updateRecipe.user.email;
         this.recipeServices.setRecipes(updateRecipe);
         return {
             code: 200,
             message: 'OK',
-            datas: this.recipeServices.getRecipe()
+            datas: updateRecipe
         }
     }
 

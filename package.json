@@ -24,6 +24,7 @@
     "@types/dotenv": "^4.0.3",
     "@types/shortid": "0.0.29",
     "cfenv": "^1.1.0",
+    "class-transformer": "^0.1.9",
     "class-validator": "^0.9.1",
     "dotenv": "^6.0.0",
     "fastify-formbody": "^2.0.0",
