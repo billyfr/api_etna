@@ -14,7 +14,9 @@ export class AuthGuard implements CanActivate {
     }
 
     validateRequest(request): boolean {
-        if (Object.keys(request.body).length === 0) {
+        if (!request.headers['authorization']) {
+            throw new HttpException({ error: 'Unauthorized' }, HttpStatus.UNAUTHORIZED);
+        } if (Object.keys(request.body).length === 0) {
             throw new HttpException({ error: 'Bad Request', datas: [] }, HttpStatus.BAD_REQUEST);
         }
         if (request.headers['authorization']) {
