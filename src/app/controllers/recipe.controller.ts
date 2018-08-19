@@ -3,7 +3,7 @@ import { AuthGuard } from './../guards/authorization.guard';
 import { users__user } from './../../common/models/entities/usersUser.entity';
 import { Controller, Get, HttpCode, Param, Inject, HttpStatus, HttpException, Put, UseGuards, Body, Req, Delete, ValidationPipe } from "@nestjs/common";
 import { RecipesServices } from "../services/recipes.services";
-import { Repository } from "typeorm";
+import { Repository, Table } from "typeorm";
 import { recipes__recipe } from "../../common/models/entities/recipesRecipe.entity";
 import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
 
@@ -97,7 +97,7 @@ export class RecipeController {
             throw new HttpException({ error: 'Not Found', datas: [] }, HttpStatus.NOT_FOUND);
         }
         if (recipe.user.password !== req.headers['authorization']) {
-            throw new HttpException({ error: 'Unauthorized' }, HttpStatus.UNAUTHORIZED);
+            throw new HttpException({ error: 'Forbidden' }, HttpStatus.FORBIDDEN);
         }
         if ((body.name && body.name.length === 0) || (body.slug && body.slug.length === 0) ||
             (body.step && body.step.length === 0)) {
@@ -137,6 +137,15 @@ export class RecipeController {
 
         delete updateRecipe.user.email;
         this.recipeServices.setRecipes(updateRecipe);
+        const step = updateRecipe.step.split(',')
+        updateRecipe.step = [];
+        console.log(updateRecipe);
+
+        step.forEach((s, index, tqb) => {
+            if (index < Table.length) {
+                updateRecipe.step.push(s);
+            }
+        });
         return {
             code: 200,
             message: 'OK',
